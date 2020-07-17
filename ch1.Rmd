@@ -19,6 +19,7 @@ ggplot(data = mpg)
 
 We see nothing because no aesthetics have been added.
 
+
 2. How many rows are in mpg? How many columns?
 
 ```{r first-steps-2}
@@ -26,9 +27,11 @@ nrow(mpg)
 ncol(mpg)
 ```
 
+
 3. What does the drv variable describe? Read the help for ?mpg to find out.
 
 "the type of drive train, where f = front-wheel drive, r = rear wheel drive, 4 = 4wd"
+
 
 4. Make a scatterplot of hwy vs cyl.
 
@@ -36,6 +39,7 @@ ncol(mpg)
 ggplot(data = mpg) +
     geom_point(aes(x = hwy, y = cyl))
 ```
+
 
 5. What happens if you make a scatterplot of class vs drv? Why is the plot not useful?
 
@@ -46,3 +50,95 @@ ggplot(data = mpg) +
 
 This graph is not useful because points are overlapping and there is also no
 discernible pattern in the data with this plot.
+
+## Aesthetic mappings
+
+1. What’s gone wrong with this code? Why are the points not blue?
+
+```{r aesthetic-mappings-1a}
+ggplot(data = mpg) + 
+    geom_point(mapping = aes(x = displ, y = hwy, color = "blue"))
+```
+
+The position of the parentheses has a mistake. Correct is:
+
+```{r aesthetic-mappings-1b}
+ggplot(data = mpg) + 
+    geom_point(aes(x = displ, y = hwy), color = "blue")
+```
+
+
+2. Which variables in mpg are categorical? Which variables are continuous? (Hint: type ?mpg to read the documentation for the dataset). How can you see this information when you run mpg?
+
+- manufacturer
+- model
+- trans
+- drv
+- fl
+- class
+
+```{r aesthetic-mappings-2}
+mpg
+```
+
+These are character variables (*\<chr\>*).
+
+
+3. Map a continuous variable to color, size, and shape. How do these aesthetics behave differently for categorical vs. continuous variables?
+
+```{r aesthetic-mappings-3a}
+ggplot(data = mpg) + 
+    geom_point(aes(x = cty, y = hwy, color = displ))
+
+ggplot(data = mpg) + 
+    geom_point(aes(x = cty, y = hwy, size = displ))
+```
+
+Mapping to shape of a continuous variable gives an error:
+"A continuous variable can not be mapped to shape"
+
+```{r aesthetic-mappings-3b}
+ggplot(data = mpg) + 
+    geom_point(aes(x = cty, y = hwy, color = fl))
+
+ggplot(data = mpg) + 
+    geom_point(aes(x = cty, y = hwy, size = fl))
+
+ggplot(data = mpg) + 
+    geom_point(aes(x = cty, y = hwy, shape = fl))
+```
+
+Although it is possible to map a categorical variable to size, it does not make
+much sense, at least in this case.
+
+Moreover, in the case of a continuous variable mapping to color also give a 
+continuous color scale. Mapping a categorical variable to color give as many
+colors as there are categories in that variable.
+
+4. What happens if you map the same variable to multiple aesthetics?
+
+```{r aesthetic-mappings-4}
+ggplot(data = mpg) + 
+    geom_point(aes(x = cty, y = hwy, color = fl, size = fl, shape = fl))
+```
+
+The different aesthetics are combined then.
+
+5. What does the stroke aesthetic do? What shapes does it work with? (Hint: use ?geom_point)
+
+```{r aesthetic-mappings-5}
+ggplot(data = mpg) + 
+    geom_point(aes(x = cty, y = hwy, color = fl, stroke = cyl), fill = "black", shape = 21)
+```
+
+Stroke works with a few shapes of the point geometry. For these specific shapes
+it determines the width of the border of the shape.
+
+6. What happens if you map an aesthetic to something other than a variable name, like aes(colour = displ < 5)? Note, you’ll also need to specify x and y.
+
+```{r aesthetic-mappings-6}
+ggplot(data = mpg) + 
+    geom_point(aes(x = cty, y = hwy, color = displ < 5))
+```
+
+Then the aesthetic (color here) is determined by whether the condition is true or false.
