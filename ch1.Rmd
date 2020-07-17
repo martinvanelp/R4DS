@@ -1,0 +1,48 @@
+---
+title: "Chapter 1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+```
+
+## First steps
+
+1. Run ggplot(data = mpg). What do you see?
+
+```{r first-steps-1}
+ggplot(data = mpg)
+```
+
+We see nothing because no aesthetics have been added.
+
+2. How many rows are in mpg? How many columns?
+
+```{r first-steps-2}
+nrow(mpg)
+ncol(mpg)
+```
+
+3. What does the drv variable describe? Read the help for ?mpg to find out.
+
+"the type of drive train, where f = front-wheel drive, r = rear wheel drive, 4 = 4wd"
+
+4. Make a scatterplot of hwy vs cyl.
+
+```{r first-steps-4}
+ggplot(data = mpg) +
+    geom_point(aes(x = hwy, y = cyl))
+```
+
+5. What happens if you make a scatterplot of class vs drv? Why is the plot not useful?
+
+```{r first-steps-5}
+ggplot(data = mpg) +
+    geom_point(aes(x = class, y = drv))
+```
+
+This graph is not useful because points are overlapping and there is also no
+discernible pattern in the data with this plot.
